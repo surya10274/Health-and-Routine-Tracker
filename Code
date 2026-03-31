@@ -1,0 +1,72 @@
+# simple health tracker program
+# stores sleep, water and habits
+
+import json
+import os
+
+file_name = "health_data.json"
+
+# function to read old data if exists
+def load_data():
+    if os.path.exists(file_name):
+        with open(file_name, "r") as f:
+            return json.load(f)
+    else:
+        return {
+            "sleep": "",
+            "water": "",
+            "habits": []
+        }
+
+# function to save data
+def save_data(data):
+    with open(file_name, "w") as f:
+        json.dump(data, f)
+
+# main program starts here
+data = load_data()
+
+while True:
+    print("\n--- Health Tracker ---")
+    print("1. Enter sleep hours")
+    print("2. Enter water intake")
+    print("3. Add a habit")
+    print("4. Show my data")
+    print("5. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        sleep = input("How many hours did you sleep? ")
+        data["sleep"] = sleep
+        print("Sleep saved")
+
+    elif choice == "2":
+        water = input("How many glasses of water? ")
+        data["water"] = water
+        print("Water saved")
+
+    elif choice == "3":
+        habit = input("Enter a habit: ")
+        data["habits"].append(habit)
+        print("Habit added")
+
+    elif choice == "4":
+        print("\nYour Data:")
+        print("Sleep:", data["sleep"], "hours")
+        print("Water:", data["water"], "glasses")
+
+        print("Habits:")
+        if len(data["habits"]) == 0:
+            print("No habits added yet")
+        else:
+            for i in range(len(data["habits"])):
+                print(str(i+1) + ".", data["habits"][i])
+
+    elif choice == "5":
+        save_data(data)
+        print("Data saved. Exiting program...")
+        break
+
+    else:
+        print("Wrong choice, try again")
